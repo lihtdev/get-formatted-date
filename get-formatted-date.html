@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Local Time</title>
+</head>
+<body>
+	<div style="font-size: 50px">
+		<span id="localTime"></span><br/>
+		<span id="today"></span>
+	</div>
+</body>
+
+<script type="text/javascript">
+	
+	///////////////////////方法一//////////////////////////////
+	
+	//eg: pattern = "yyyy-MM-dd hh:mm:ss";
+	Date.prototype.getFormattedDate = function(pattern){
+	    
+	    function getFullStr(i){
+	        return i>9?""+i:"0"+i;
+	    }
+	    
+	    pattern = pattern.replace(/yyyy/,this.getFullYear())
+	        .replace(/MM/,getFullStr(this.getMonth()+1))
+	        .replace(/dd/,getFullStr(this.getDate()))
+	        .replace(/hh/,getFullStr(this.getHours()))
+	        .replace(/mm/,getFullStr(this.getMinutes()))
+	        .replace(/ss/,getFullStr(this.getSeconds()));
+	
+	    return pattern;
+	};
+
+	var localTimeSpan = document.getElementById("localTime");
+	localTimeSpan.innerHTML = (new Date()).getFormattedDate("yyyy-MM-dd hh:mm:ss");
+	setInterval(function(){
+		localTimeSpan.innerHTML = (new Date()).getFormattedDate("yyyy-MM-dd hh:mm:ss");
+	}, 1000);
+	
+	///////////////////////方法二//////////////////////////////
+	
+	var week = '日一二三四五六';
+	var dateHtml = "{0}月{1}日 &nbsp;周{2}";
+	var date = new Date();
+	
+	function format(str, json){
+		return str.replace(/{(\d)}/g, function(a, key) {
+			return json[key];
+		});
+	}
+	
+	document.getElementById('today').innerHTML = format(dateHtml, [ date.getMonth()+1, date.getDate(), week.charAt(date.getDay())]);
+
+</script>
+</html>
